@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import PopupModal from "../Components/PopupModal";
-import {ReactComponent as DeleteIcon} from "../assets/deleteIcon.svg";
+import { ReactComponent as DeleteIcon } from "../assets/deleteIcon.svg";
 import PieChart from "../Components/PieChart";
 import { Chart as ChartJS, ArcElement, Legend, Title, Tooltip } from "chart.js";
 import MonthNavigator from "../Components/MonthNavigator";
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 const Home = () => {
+  const [loading, setLoading] = useState(true);
   const [transactionData, setTransactionData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [filteredTransactions, setFilteredTransactions] = useState([]);
-  const initialCounts ={
+  const initialCounts = {
     IncomeAmount: 0,
     ExpenseAmount: 0,
     BonusCnt: 0,
@@ -83,14 +84,19 @@ const Home = () => {
   //  fetch all the transaction data
 
   const fetchTransactionData = async () => {
+    setLoading(true);
     try {
-      const res = await fetch(process.env.REACT_APP_URL+`/api/transaction/read`);
+      const res = await fetch(
+        process.env.REACT_APP_URL + `/api/transaction/read`
+      );
       const data = await res.json();
       if (data.success === false) {
+        setLoading(false);
         console.log("Error in Reading Data");
         return;
       }
       setTransactionData(data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -223,18 +229,15 @@ const Home = () => {
 
   // console.log("filteredTransactions",filteredTransactions);
 
-
-  const handleDeleteTransaction = async(id)=>{
-    await fetch(process.env.REACT_APP_URL+`/api/transaction/delete/`+id,
-      {
-        method:'DELETE'
-      }
-    );
-
-    setFilteredTransactions(prev=>{
-      return prev.filter(d=>d._id !== id);
+  const handleDeleteTransaction = async (id) => {
+    await fetch(process.env.REACT_APP_URL + `/api/transaction/delete/` + id, {
+      method: "DELETE",
     });
-  }
+
+    setFilteredTransactions((prev) => {
+      return prev.filter((d) => d._id !== id);
+    });
+  };
 
   return (
     <main className="max-w-7xl mx-auto dark:bg-dark dark:text-white min-h-[98vh] flex flex-col gap-4 md:gap-4 sm:px-12  py-12 relative overflow-hidden ">
@@ -309,61 +312,72 @@ const Home = () => {
 
       {/* listings */}
 
-      {filteredTransactions?.length > 0 ? (
-        filteredTransactions?.map((data, index) => (
-          <div key={index} className="bg-white rounded-lg">
-            <div className="flex justify-between border-b-2 py-4 px-8">
-              <div className="flex gap-2">
-                <h3 className="font-semibold">
-                  {new Date(data.date).getDate()}
-                </h3>
-                <h3 className="font-semibold bg-slate-200 px-4 rounded-lg">
-                  {new Date(data.date)
-                    .toLocaleString("default", { weekday: "short" })
-                    .toUpperCase()}
-                </h3>
-                <h3 className="font-semibold">
-                  {new Date(data.date)
-                    .toLocaleString("default", { month: "long" })
-                    .toUpperCase()}
-                </h3>
-                <h3 className="font-semibold">
-                  {new Date(data.date).getFullYear()}
-                </h3>
-              </div>
-              <div className="flex gap-4">
-                <h3 className="font-bold text-green-600">
-                  {data.type === "Income" ? data.amount : 0}
-                </h3>
-                <h3 className="font-bold text-red-600">
-                  {data.type === "Expense" ? data.amount : 0}
-                </h3>
-              </div>
-            </div>
-
-            <div className="py-2">
-              <div className="flex items-center gap-4 px-8 py-1">
-                <span className="min-w-fit bg-green-300 px-4 text-center rounded-lg">
-                  {data.category}
-                </span>
-                <span className="font-bold">{data.title}</span>
-                <h3
-                  className="flex justify-center gap-8 font-bold"
-                  style={{ marginLeft: "auto" }}
-                  
-                >
-                  {data.amount} 
-                </h3>
-                <span onClick={()=>handleDeleteTransaction(data._id)}> <DeleteIcon/> </span>
-              </div>
-            </div>
-          </div>
-        ))
-      ) : (
-        <>
-          <h3 className=" mt-8 text-center font-bold text-4xl">No Data Found</h3>
-        </>
+      {loading && (
+        <h3 className=" mt-8 text-center font-bold text-4xl">Loading...</h3>
       )}
+      {!loading ? (
+        <>
+          {filteredTransactions?.length > 0 ? (
+            filteredTransactions?.map((data, index) => (
+              <div key={index} className="bg-white rounded-lg">
+                <div className="flex justify-between border-b-2 py-4 px-8">
+                  <div className="flex gap-2">
+                    <h3 className="font-semibold">
+                      {new Date(data.date).getDate()}
+                    </h3>
+                    <h3 className="font-semibold bg-slate-200 px-4 rounded-lg">
+                      {new Date(data.date)
+                        .toLocaleString("default", { weekday: "short" })
+                        .toUpperCase()}
+                    </h3>
+                    <h3 className="font-semibold">
+                      {new Date(data.date)
+                        .toLocaleString("default", { month: "long" })
+                        .toUpperCase()}
+                    </h3>
+                    <h3 className="font-semibold">
+                      {new Date(data.date).getFullYear()}
+                    </h3>
+                  </div>
+                  <div className="flex gap-4">
+                    <h3 className="font-bold text-green-600">
+                      {data.type === "Income" ? data.amount : 0}
+                    </h3>
+                    <h3 className="font-bold text-red-600">
+                      {data.type === "Expense" ? data.amount : 0}
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="py-2">
+                  <div className="flex items-center gap-4 px-8 py-1">
+                    <span className="min-w-fit bg-green-300 px-4 text-center rounded-lg">
+                      {data.category}
+                    </span>
+                    <span className="font-bold">{data.title}</span>
+                    <h3
+                      className="flex justify-center gap-8 font-bold"
+                      style={{ marginLeft: "auto" }}
+                    >
+                      {data.amount}
+                    </h3>
+                    <span onClick={() => handleDeleteTransaction(data._id)}>
+                      {" "}
+                      <DeleteIcon />{" "}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <>
+              <h3 className=" mt-8 text-center font-bold text-4xl">
+                No Data Found
+              </h3>
+            </>
+          )}
+        </>
+      ) : null}
 
       {/* popup window on clicking + button */}
       <PopupModal />
