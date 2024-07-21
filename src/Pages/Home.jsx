@@ -181,7 +181,7 @@ const Home = () => {
     }
   }, [filteredTransactions]);
 
-  console.log(counts);
+  // console.log(counts);
 
   useEffect(() => {
     setTypeData((prev) => ({
@@ -218,7 +218,7 @@ const Home = () => {
     }));
   }, [counts]);
 
-  console.log("filteredTransactions",filteredTransactions);
+  // console.log("filteredTransactions",filteredTransactions);
 
 
   const handleDeleteTransaction = async(id)=>{
@@ -360,36 +360,6 @@ const Home = () => {
           <h3 className=" mt-8 text-center font-bold text-4xl">No Data Found</h3>
         </>
       )}
-      {/* {transactionData?.map((data,index) => (
-        <div key={index} className="bg-white rounded-lg">
-        <div className="flex justify-between border-b-2 py-4 px-8">
-          <div className="flex gap-2">
-            <h3 className="font-semibold">{new Date(data.date).getDate()}</h3>
-            <h3 className="font-semibold bg-slate-200 px-4 rounded-lg">{new Date(data.date).toLocaleString("default", {
-                  weekday: "short",
-                }).toUpperCase()}</h3>
-            <h3 className="font-semibold">{new Date(data.date).toLocaleString('default', { month: 'long' }).toUpperCase()}</h3>
-            <h3 className="font-semibold">{new Date(data.date).getFullYear()}</h3>
-          </div>
-          <div className="flex gap-4">
-            <h3 className="font-bold text-green-600">{data.type === "Income" ? data.amount : 0}</h3>
-            <h3 className="font-bold text-red-600">{data.type === "Expense" ? data.amount : 0}</h3>
-          </div>
-        </div>
-
-        <div className="py-2">
-          <div className="flex gap-4 px-8 py-1">
-            <span className="min-w-fit bg-green-300 px-4  text-center rounded-lg ">
-            {data.category}
-            </span>
-            <span className=" font-bold">{data.title}</span>
-            <h3 className="flex gap-8 font-bold" style={{ marginLeft: "auto" }}>
-            {data.amount} <span>Del</span>
-            </h3>
-          </div>
-        </div>
-      </div>
-      ))} */}
 
       {/* popup window on clicking + button */}
       <PopupModal />

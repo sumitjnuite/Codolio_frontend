@@ -58,7 +58,7 @@ const PopupModal = () => {
     // Example:
     // addTransaction(transactionData);
     // Or if using a server:
-    await fetch('http://localhost:4000/api/transaction/add', {
+    await fetch(process.env.REACT_APP_URL+`/api/transaction/add`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
