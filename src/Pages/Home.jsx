@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PopupModal from "../Components/PopupModal";
+import {ReactComponent as DeleteIcon} from "../assets/deleteIcon.svg";
 import PieChart from "../Components/PieChart";
 import { Chart as ChartJS, ArcElement, Legend, Title, Tooltip } from "chart.js";
 import MonthNavigator from "../Components/MonthNavigator";
-// import { TransactionData } from "../TransactionData.js";
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 const Home = () => {
@@ -342,18 +342,19 @@ const Home = () => {
             </div>
 
             <div className="py-2">
-              <div className="flex gap-4 px-8 py-1">
+              <div className="flex items-center gap-4 px-8 py-1">
                 <span className="min-w-fit bg-green-300 px-4 text-center rounded-lg">
                   {data.category}
                 </span>
                 <span className="font-bold">{data.title}</span>
                 <h3
-                  className="flex gap-8 font-bold"
+                  className="flex justify-center gap-8 font-bold"
                   style={{ marginLeft: "auto" }}
-                  onClick={()=>handleDeleteTransaction(data._id)}
+                  
                 >
-                  {data.amount} <span>Del</span>
+                  {data.amount} 
                 </h3>
+                <span onClick={()=>handleDeleteTransaction(data._id)}> <DeleteIcon/> </span>
               </div>
             </div>
           </div>
