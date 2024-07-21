@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import PopupModal from "../Components/PopupModal";
 import { ReactComponent as DeleteIcon } from "../assets/deleteIcon.svg";
 import { ReactComponent as SearchIcon } from "../assets/searchIcon.svg";
+import { toast } from "react-toastify";
 
 import PieChart from "../Components/PieChart";
 import { Chart as ChartJS, ArcElement, Legend, Title, Tooltip } from "chart.js";
@@ -248,9 +249,15 @@ const Home = () => {
   // console.log("filteredTransactions",filteredTransactions);
 
   const handleDeleteTransaction = async (id) => {
-    await fetch(process.env.REACT_APP_URL + `/api/transaction/delete/` + id, {
+    const response = await fetch(process.env.REACT_APP_URL + `/api/transaction/delete/` + id, {
       method: "DELETE",
     });
+
+    if (response.ok) {
+      toast.success("Data deleted successfully!");
+    } else {
+      toast.error("Data deletion Failed.");
+    }
 
     setFilteredTransactions((prev) => {
       return prev.filter((d) => d._id !== id);
@@ -419,7 +426,7 @@ const Home = () => {
       ) : null}
 
       {/* popup window on clicking + button */}
-      <PopupModal />
+      <PopupModal fetchTransactionData={fetchTransactionData}/>
     </main>
   );
 };

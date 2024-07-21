@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
-const PopupModal = () => {
+const PopupModal = ({fetchTransactionData}) => {
   // ------------------------
   const [isOpen, setIsOpen] = useState(false); // to open close form model
   // Initialize selectedField with 'Income' to ensure one element is always selected
@@ -71,6 +71,7 @@ const PopupModal = () => {
         // close the model
         setIsOpen(false);
         toast.success("Data added to DB successfully!");
+        fetchTransactionData();
         // Clear the form
         setFormData({
           date: "",
