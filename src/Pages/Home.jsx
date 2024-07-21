@@ -261,11 +261,11 @@ const Home = () => {
         <div className="flex flex-col md:flex-row gap-2 lg:gap-16 my-2">
           <div className="flex-1 flex justify-center gap-2 lg:gap-8  bg-green-200 font-bold text-lg text-green-600 rounded-sm py-2">
             <span>INCOME:</span>
-            <span>$ {counts.IncomeAmount}</span>
+            <span>$ {filteredTransactions?.length > 0 ? counts.IncomeAmount : 0}</span>
           </div>
           <div className="flex-1 flex justify-center gap-2 lg:gap-8 bg-red-200 font-bold text-lg text-red-600 rounded-sm py-2">
             <span>EXPENCE:</span>
-            <span>$ {counts.ExpenseAmount}</span>
+            <span>$ {filteredTransactions?.length > 0 ?  counts.ExpenseAmount : 0}</span>
           </div>
         </div>
       </div>
@@ -342,7 +342,7 @@ const Home = () => {
                         .toLocaleString("default", { month: "long" })
                         .toUpperCase()}
                     </h3>
-                    <h3 className="font-semibold">
+                    <h3 className="font-semibold mr-2">
                       {new Date(data.date).getFullYear()}
                     </h3>
                   </div>
