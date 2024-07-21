@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import PopupModal from "../Components/PopupModal";
 import { ReactComponent as DeleteIcon } from "../assets/deleteIcon.svg";
+import { ReactComponent as SearchIcon } from "../assets/searchIcon.svg";
+
 import PieChart from "../Components/PieChart";
 import { Chart as ChartJS, ArcElement, Legend, Title, Tooltip } from "chart.js";
 import MonthNavigator from "../Components/MonthNavigator";
@@ -186,6 +188,8 @@ const Home = () => {
         }
       });
 
+      updatedCounts.IncomeAmount = updatedCounts.IncomeAmount.toFixed(2);
+      updatedCounts.ExpenseAmount = updatedCounts.ExpenseAmount.toFixed(2);
       setCounts(updatedCounts);
     }
   }, [filteredTransactions]);
@@ -240,7 +244,7 @@ const Home = () => {
   };
 
   return (
-    <main className="max-w-7xl mx-auto dark:bg-dark dark:text-white min-h-[98vh] flex flex-col gap-4 md:gap-4 sm:px-12  py-12 relative overflow-hidden ">
+    <main className="max-w-7xl mx-auto  min-h-[98vh] flex flex-col gap-4 md:gap-4 sm:px-12  py-12 relative overflow-hidden ">
       <MonthNavigator onDateChange={setSelectedDate} />
 
       {/* Chart */}
@@ -268,20 +272,23 @@ const Home = () => {
 
       {/* filter div */}
       <div className="flex flex-col md:flex-row  gap-4">
-        <input
-          type="text"
-          placeholder="Search by title"
-          className="w-[50%] px-4 py-2 outline-none rounded-md"
-        />
+        <div className="flex items-center w-[50%] bg-white rounded-md overflow-hidden px-2">
+          <input
+            type="text"
+            placeholder="Search by title"
+            className="w-[100%] pl-2 py-2 outline-none "
+          />
+          <SearchIcon />
+        </div>
 
         <div className="flex-1 flex gap-4">
-          <select name="Type" id="" className="flex-1 px-2 rounded-md">
+          <select name="Type" id="" className="flex-1 px-2 rounded-md outline-none">
             <option value="">Type</option>
             <option value="">Income</option>
             <option value="">Expence</option>
           </select>
 
-          <select name="" id="" className="flex-1 px-2 rounded-md">
+          <select name="" id="" className="flex-1 px-2 rounded-md outline-none">
             <option value="">Category</option>
             <option value="">Bonus</option>
             <option value="">Education</option>
@@ -299,7 +306,7 @@ const Home = () => {
             <option value="">Utilities</option>
           </select>
 
-          <select name="" id="" className="flex-1 px-2 rounded-md">
+          <select name="" id="" className="flex-1 px-2 rounded-md outline-none">
             <option value="">Currency</option>
             <option value="">EUR</option>
             <option value="">GBP</option>
