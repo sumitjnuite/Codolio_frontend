@@ -13,6 +13,9 @@ const Home = () => {
   const [transactionData, setTransactionData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [filteredTransactions, setFilteredTransactions] = useState([]);
+  const [searchTitle, setSearchTitle] = useState("");
+  const [searchType, setSearchType] = useState("");
+  const [searchCategory, setSearchCategory] = useState("");
   const initialCounts = {
     IncomeAmount: 0,
     ExpenseAmount: 0,
@@ -116,10 +119,21 @@ const Home = () => {
       const year = selectedDate.getFullYear();
       const filtered = transactionData?.filter((transaction) => {
         const transactionDate = new Date(transaction.date);
-        return (
+        const matchesDate =
           transactionDate.getMonth() === month &&
-          transactionDate.getFullYear() === year
-        );
+          transactionDate.getFullYear() === year;
+
+        const matchesTitle = searchTitle
+          ? transaction.title.toLowerCase().includes(searchTitle.toLowerCase())
+          : true;
+
+        const matchesType = searchType ? transaction.type === searchType : true;
+
+        const matchesCategory = searchCategory
+          ? transaction.category === searchCategory
+          : true;
+
+        return matchesDate && matchesTitle && matchesType && matchesCategory;
       });
 
       // Sort filtered transactions by date
@@ -128,7 +142,7 @@ const Home = () => {
     };
 
     filterTransactions();
-  }, [transactionData, selectedDate]);
+  }, [transactionData, selectedDate, searchTitle, searchType, searchCategory]);
 
   useEffect(() => {
     if (filteredTransactions?.length > 0) {
@@ -261,11 +275,15 @@ const Home = () => {
         <div className="flex flex-col md:flex-row gap-2 lg:gap-16 my-2">
           <div className="flex-1 flex justify-center gap-2 lg:gap-8  bg-green-200 font-bold text-lg text-green-600 rounded-sm py-2">
             <span>INCOME:</span>
-            <span>$ {filteredTransactions?.length > 0 ? counts.IncomeAmount : 0}</span>
+            <span>
+              $ {filteredTransactions?.length > 0 ? counts.IncomeAmount : 0}
+            </span>
           </div>
           <div className="flex-1 flex justify-center gap-2 lg:gap-8 bg-red-200 font-bold text-lg text-red-600 rounded-sm py-2">
             <span>EXPENCE:</span>
-            <span>$ {filteredTransactions?.length > 0 ?  counts.ExpenseAmount : 0}</span>
+            <span>
+              $ {filteredTransactions?.length > 0 ? counts.ExpenseAmount : 0}
+            </span>
           </div>
         </div>
       </div>
@@ -277,36 +295,50 @@ const Home = () => {
             type="text"
             placeholder="Search by title"
             className="w-[100%] pl-2 py-2 outline-none "
+            value={searchTitle}
+            onChange={(e) => setSearchTitle(e.target.value)}
           />
           <SearchIcon />
         </div>
 
         <div className="flex-1 flex gap-4">
-          <select name="Type" id="" className="flex-1 px-2 rounded-md outline-none">
+          <select
+            name="Type"
+            id=""
+            className="flex-1 px-2 rounded-md outline-none"
+            value={searchType}
+            onChange={(e) => setSearchType(e.target.value)}
+          >
             <option value="">Type</option>
-            <option value="">Income</option>
-            <option value="">Expence</option>
+            <option value="Income">Income</option>
+            <option value="Expence">Expence</option>
           </select>
 
-          <select name="" id="" className="flex-1 px-2 rounded-md outline-none">
+          <select
+            name=""
+            id=""
+            className="flex-1 px-2 rounded-md outline-none"
+            value={searchCategory}
+            onChange={(e) => setSearchCategory(e.target.value)}
+          >
             <option value="">Category</option>
-            <option value="">Bonus</option>
-            <option value="">Education</option>
-            <option value="">Entertainment</option>
-            <option value="">Food</option>
-            <option value="">Freelance</option>
-            <option value="">Gift</option>
-            <option value="">Healthcare</option>
-            <option value="">Investment</option>
-            <option value="">Rent</option>
-            <option value="">Salary</option>
-            <option value="">Shopping</option>
-            <option value="">Transportation</option>
-            <option value="">Travel</option>
-            <option value="">Utilities</option>
+            <option value="Bonus">Bonus</option>
+            <option value="Education">Education</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Food">Food</option>
+            <option value="Freelance">Freelance</option>
+            <option value="Gift">Gift</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Investment">Investment</option>
+            <option value="Rent">Rent</option>
+            <option value="Salary">Salary</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Transportation">Transportation</option>
+            <option value="Travel">Travel</option>
+            <option value="Utilities">Utilities</option>
           </select>
 
-          <select name="" id="" className="flex-1 px-2 rounded-md outline-none">
+          <select name="" id="" className="flex-1 px-2 rounded-md outline-none"> 
             <option value="">Currency</option>
             <option value="">EUR</option>
             <option value="">GBP</option>
