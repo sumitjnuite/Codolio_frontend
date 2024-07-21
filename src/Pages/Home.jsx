@@ -113,6 +113,9 @@ const Home = () => {
           transactionDate.getFullYear() === year
         );
       });
+
+      // Sort filtered transactions by date
+      filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
       setFilteredTransactions(filtered);
     };
 

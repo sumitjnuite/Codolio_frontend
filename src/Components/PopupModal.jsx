@@ -54,10 +54,6 @@ const PopupModal = () => {
 
     console.log("Transaction Data:", transactionData);
 
-    // Perform further actions such as sending the data to a server or updating the state
-    // Example:
-    // addTransaction(transactionData);
-    // Or if using a server:
     await fetch(process.env.REACT_APP_URL+`/api/transaction/add`, {
       method: 'POST',
       headers: {
