@@ -289,8 +289,8 @@ const Home = () => {
       </div>
 
       {/* filter div */}
-      <div className="flex flex-col md:flex-row  gap-4">
-        <div className="flex items-center w-[50%] bg-white rounded-md overflow-hidden px-2">
+      <div className="flex flex-col md:flex-row  gap-4 p-2">
+        <div className="flex items-center w-full  md:w-[50%] bg-white rounded-md overflow-hidden px-2">
           <input
             type="text"
             placeholder="Search by title"
