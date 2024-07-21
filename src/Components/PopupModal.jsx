@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 const PopupModal = () => {
   // ------------------------
@@ -54,25 +55,39 @@ const PopupModal = () => {
 
     console.log("Transaction Data:", transactionData);
 
-    await fetch(process.env.REACT_APP_URL+`/api/transaction/add`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(transactionData),
-    });
+    try {
+      const response = await fetch(
+        process.env.REACT_APP_URL + `/api/transaction/add`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(transactionData),
+        }
+      );
 
-    // Close the modal
-    setIsOpen(false);
+      if (response.ok) {
+        // close the model
+        setIsOpen(false);
+        toast.success("Data added to DB successfully!");
+        // Clear the form
+        setFormData({
+          date: "",
+          amount: "",
+          category: "",
+          title: "",
+          notes: "",
+        });
+      } else {
+        toast.error("Failed to add data to DB.");
+      }
+    } catch (error) {
+      setIsOpen(false);
+      console.error("Error submitting form", error);
+      toast.error("Failed to add data to DB.");
+    }    
 
-    // Clear the form
-    setFormData({
-      date: "",
-      amount: "",
-      category: "",
-      title: "",
-      notes: "",
-    });
     setSelectedField("Income");
   };
 
